@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text.Json;
+using NLog;
+
+class Program
+{
+    // Renamed to avoid conflict with Logger class
+    private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+
+    static async Task Main(string[] args)
+    {
+        // Initialize logging FIRST before any log calls
+        Logger.Setup();
+        
+        _logger.Info("========== Reddit to Bluesky Bot Started ==========");
+
+        try
+        {
+            // Initialize database
+            DbInit.Initialize();
+            DbUpgrade.MigrateIfNeeded();
+
+            // Load configuration
+            var subreddits = LoadSubredditsFromConfig();
+            _logger.Info($"Available subreddits: {string.Join(", r/", subreddits)}");
+
+            // If no command line args, prompt user for subreddit selection
+            List<string> selectedSubreddits = subreddits;
+            if (args.Length == 0)
+            {
+                selectedSubreddits = PromptForSubreddits(subreddits);
+            }
+            else if (args.Length >= 1 && args[0].ToLower() == "-a")
+            {
+                // -a flag means use all subreddits
+                _logger.Info("Using all configured subreddits");
+            }
+            else
+            {
+                // Filter to specified subreddits
+                selectedSubreddits = new List<string>();
+                foreach (var arg in args)
+                {
+                    string sr = arg.StartsWith("r/") ? arg.Substring(2) : arg;
+                    if (subreddits.Contains(sr, StringComparer.OrdinalIgnoreCase))
+                    {
+                        selectedSubreddits.Add(sr);
+                    }
+                }
+                if (selectedSubreddits.Count == 0)
+                    selectedSubreddits = subreddits;
+            }
+
+            // Configure Reddit client
+            RedditClient.SetSubreddits(selectedSubreddits);
+
+            _logger.Info("Starting Reddit scrape cycle...");
+
+            // Scrape Reddit
+            var posts = await RedditClient.FetchPostsAsync();
+            _logger.Info($"Total posts fetched: {posts.Count}");
+
+            // Process each post
+            int successCount = 0;
+            int skipCount = 0;
+
+            foreach (var post in posts)
+            {
+                try
+                {
+                    // Check if already posted
+                    if (Database.AlreadyPosted(post.RedditId))
+                    {
+                        _logger.Debug($"Skipping r/{post.Subreddit} post {post.RedditId} - already posted");
+                        skipCount++;
+                        continue;
+                    }
+
+                    // Download and hash image
+                    string? imagePath = await ImageUtils.DownloadImageAsync(post.ImageUrl);
+                    if (imagePath == null)
+                    {
+                        _logger.Warn($"Failed to download image for r/{post.Subreddit} post {post.RedditId}");
+                        skipCount++;
+                        continue;
+                    }
+
+                    string imageHash = ImageUtils.ComputePerceptualHash(imagePath);
+
+                    // Check for duplicate image
+                    if (Database.IsDuplicateImage(imageHash))
+                    {
+                        _logger.Debug($"Skipping r/{post.Subreddit} post {post.RedditId} - duplicate image");
+                        File.Delete(imagePath);
+                        skipCount++;
+                        continue;
+                    }
+
+                    // Post to Bluesky
+                    bool success = await BlueskyClient.PostAsync(post.TopComment, imagePath);
+                    if (success)
+                    {
+                        Database.MarkPosted(post.RedditId, imageHash);
+                        _logger.Info($"Posted r/{post.Subreddit}/{post.RedditId} to Bluesky");
+                        successCount++;
+                    }
+                    else
+                    {
+                        _logger.Error($"Failed to post r/{post.Subreddit}/{post.RedditId} to Bluesky");
+                    }
+
+                    File.Delete(imagePath);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, $"Error processing post {post.RedditId}");
+                }
+            }
+
+            _logger.Info($"========== Cycle Complete: {successCount} posted, {skipCount} skipped ==========");
+        }
+        catch (Exception ex)
+        {
+            _logger.Fatal(ex, "Fatal error in main loop");
+            Environment.Exit(1);
+        }
+    }
+
+    private static List<string> LoadSubredditsFromConfig()
+    {
+        try
+        {
+            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+            if (!File.Exists(configPath))
+            {
+                _logger.Warn("appsettings.json not found, using default subreddits");
+                return new List<string> { "Conservative" };
+            }
+
+            string json = File.ReadAllText(configPath);
+            using (var doc = JsonDocument.Parse(json))
+            {
+                var root = doc.RootElement;
+                if (root.TryGetProperty("RedditConfig", out var config) &&
+                    config.TryGetProperty("Subreddits", out var subredditsArray))
+                {
+                    var result = new List<string>();
+                    foreach (var item in subredditsArray.EnumerateArray())
+                    {
+                        var sr = item.GetString();
+                        if (!string.IsNullOrWhiteSpace(sr))
+                            result.Add(sr);
+                    }
+                    return result.Count > 0 ? result : new List<string> { "Conservative" };
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error loading subreddits from config");
+        }
+
+        return new List<string> { "Conservative" };
+    }
+
+    private static List<string> PromptForSubreddits(List<string> available)
+    {
+        Console.WriteLine();
+        Console.WriteLine("========== Subreddit Selection ==========");
+        Console.WriteLine();
+        Console.WriteLine("Available subreddits:");
+
+        for (int i = 0; i < available.Count; i++)
+        {
+            Console.WriteLine($"  {i + 1}. r/{available[i]}");
+        }
+
+        Console.WriteLine($"  A. All ({available.Count} subreddits)");
+        Console.WriteLine();
+        Console.Write("Select subreddits (comma-separated numbers, or 'A' for all): ");
+
+        string? input = Console.ReadLine()?.Trim().ToUpper();
+
+        if (string.IsNullOrWhiteSpace(input) || input == "A")
+        {
+            Console.WriteLine($"Selected: All subreddits");
+            return available;
+        }
+
+        var selected = new List<string>();
+        foreach (var part in input.Split(','))
+        {
+            if (int.TryParse(part.Trim(), out int idx) && idx >= 1 && idx <= available.Count)
+            {
+                selected.Add(available[idx - 1]);
+            }
+        }
+
+        if (selected.Count == 0)
+        {
+            Console.WriteLine("No valid selection, using all subreddits");
+            return available;
+        }
+
+        Console.WriteLine($"Selected: {string.Join(", r/", selected)}");
+        return selected;
+    }
+}
