@@ -1,0 +1,7 @@
+
+
+# Ignore runtime outputs and credentials
+reddit-to-bsky/appsettings.json
+reddit-to-bsky/*.txt
+*.log
+temp_output.txt
