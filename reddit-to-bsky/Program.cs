@@ -133,7 +133,10 @@ class Program
                     if (success)
                     {
                         Database.MarkPosted(post.RedditId, imageHash);
-                        _logger.Info($"Posted r/{post.Subreddit}/{post.RedditId} to Bluesky");
+                        // enforce 45‑minute cooldown between posts (persistent)
+                        var next = DateTime.UtcNow.AddMinutes(45);
+                        Database.SetNextAllowedPostUtc(next);
+                        _logger.Info($"Posted r/{post.Subreddit}/{post.RedditId} to Bluesky; next allowed at {next:o} UTC");
                         successCount++;
                         if (successCount >= maxPosts)
                         {
