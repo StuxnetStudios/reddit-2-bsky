@@ -82,6 +82,47 @@ public static class Database
         }
     }
 
+    public static string? GetMetadata(string key)
+    {
+        using (var conn = GetConnection())
+        {
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT value FROM metadata WHERE key = @key";
+            cmd.Parameters.AddWithValue("@key", key);
+            var result = cmd.ExecuteScalar();
+            return result == null ? null : (string)result;
+        }
+    }
+
+    public static void SetMetadata(string key, string? value)
+    {
+        using (var conn = GetConnection())
+        {
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = @"INSERT INTO metadata (key,value) VALUES (@key,@value)
+                                ON CONFLICT(key) DO UPDATE SET value = @value";
+            cmd.Parameters.AddWithValue("@key", key);
+            cmd.Parameters.AddWithValue("@value", (object?)value ?? DBNull.Value);
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+    public static DateTime? GetNextAllowedPostUtc()
+    {
+        var val = GetMetadata("next_allowed_post_utc");
+        if (string.IsNullOrEmpty(val)) return null;
+        if (DateTime.TryParse(val, out var dt)) return DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+        return null;
+    }
+
+    public static void SetNextAllowedPostUtc(DateTime? dt)
+    {
+        if (dt == null)
+            SetMetadata("next_allowed_post_utc", null);
+        else
+            SetMetadata("next_allowed_post_utc", dt.Value.ToString("o"));
+    }
+
     public static void Close()
     {
         _connection?.Dispose();

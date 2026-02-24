@@ -21,12 +21,39 @@ public static class RedditClient
     private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
     private static readonly HttpClient Client = new HttpClient();
     private const string PushshiftApiUrl = "https://api.pullpush.io/reddit/search/submission/";
-    private const int MinScore = 200;
+    private static int MinScore = 200;        // default, overridden by config
+    private static int FetchLimit = 100;       // default, overridden by config
     private static List<string> _subreddits = new();
 
     static RedditClient()
     {
         Client.DefaultRequestHeaders.Add("User-Agent", "RedditToBlueskyBot/1.0");
+        LoadConfig();
+    }
+
+    private static void LoadConfig()
+    {
+        try
+        {
+            string settingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+            if (!File.Exists(settingsPath))
+                settingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+            if (File.Exists(settingsPath))
+            {
+                using var doc = JsonDocument.Parse(File.ReadAllText(settingsPath));
+                if (doc.RootElement.TryGetProperty("RedditConfig", out var config))
+                {
+                    if (config.TryGetProperty("MinimumScore", out var min) && min.TryGetInt32(out var mi))
+                        MinScore = mi;
+                    if (config.TryGetProperty("FetchLimit", out var lim) && lim.TryGetInt32(out var fl))
+                        FetchLimit = fl;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Debug(ex, "Error loading Reddit config");
+        }
     }
 
     public static void SetSubreddits(List<string> subreddits)
@@ -44,6 +71,8 @@ public static class RedditClient
 
         if (_subreddits.Count == 0)
             SetSubreddits(new List<string> { "Conservative" });
+
+        Logger.Info($"Reddit config: minScore={MinScore}, fetchLimit={FetchLimit}");
 
         // Fetch from each subreddit
         foreach (var subreddit in _subreddits)
@@ -71,7 +100,7 @@ public static class RedditClient
         try
         {
             // Query Pushshift API
-            string queryUrl = $"{PushshiftApiUrl}?subreddit={subreddit}&score=>{MinScore}&limit=100&has_url=true";
+            string queryUrl = $"{PushshiftApiUrl}?subreddit={subreddit}&score=>{MinScore}&limit={FetchLimit}&has_url=true";
             Logger.Debug($"Querying: {queryUrl}");
 
             var response = await Client.GetAsync(queryUrl);
@@ -90,8 +119,6 @@ public static class RedditClient
                             var post = ParseRedditPost(item, subreddit);
                             if (post != null && IsValidImageUrl(post.ImageUrl))
                             {
-                                // Fetch top comment
-                                post.TopComment = await FetchTopCommentAsync(post.RedditId);
                                 posts.Add(post);
                             }
                         }
@@ -142,30 +169,67 @@ public static class RedditClient
         return false;
     }
 
-    private static async Task<string> FetchTopCommentAsync(string postId)
+    public static async Task<string> FetchTopCommentAsync(string postId)
     {
         try
         {
-            string permalinkUrl = $"https://reddit.com/comments/{postId}";
-            var response = await Client.GetAsync(permalinkUrl);
+            string jsonUrl = $"https://www.reddit.com/comments/{postId}.json?limit=10&sort=top";
+            var request = new HttpRequestMessage(HttpMethod.Get, jsonUrl);
+            request.Headers.Add("User-Agent", "RedditToBlueskyBot/1.0");
+            var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            string html = await response.Content.ReadAsStringAsync();
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
+            string json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
 
-            // XPath to select top comment (stub - adjust based on Reddit HTML structure)
-            var commentNode = doc.DocumentNode.SelectSingleNode("//div[@class='Comment']");
-            if (commentNode != null)
+            // Response is an array: [post_listing, comments_listing]
+            var commentsListing = doc.RootElement[1];
+            var children = commentsListing
+                .GetProperty("data")
+                .GetProperty("children");
+
+            foreach (var child in children.EnumerateArray())
             {
-                return commentNode.InnerText.Trim();
+                var kind = child.GetProperty("kind").GetString();
+                if (kind != "t1") continue; // t1 = comment
+
+                var data = child.GetProperty("data");
+
+                // Skip removed/deleted/AutoModerator/mod comments
+                var author = data.TryGetProperty("author", out var a) ? a.GetString() : null;
+                var body = data.TryGetProperty("body", out var b) ? b.GetString() : null;
+                if (string.IsNullOrWhiteSpace(body) || body == "[removed]" || body == "[deleted]")
+                    continue;
+                if (author == "AutoModerator")
+                    continue;
+
+                // Skip stickied comments (usually mod notices)
+                if (data.TryGetProperty("stickied", out var stickied) && stickied.GetBoolean())
+                    continue;
+
+                // Skip mod-distinguished comments
+                if (data.TryGetProperty("distinguished", out var distinguished) &&
+                    distinguished.ValueKind != JsonValueKind.Null &&
+                    distinguished.GetString() == "moderator")
+                    continue;
+
+                // Skip comments that look like mod removal notices
+                var lowerBody = body.ToLowerInvariant();
+                if (lowerBody.Contains("your submission was removed") ||
+                    lowerBody.Contains("your post was removed") ||
+                    lowerBody.Contains("removed for the following reason") ||
+                    lowerBody.Contains("please read the rules") ||
+                    lowerBody.Contains("rule violation"))
+                    continue;
+
+                return body.Trim();
             }
         }
         catch (Exception ex)
         {
-            Logger.Debug(ex, $"Error fetching top comment for post {postId}");
+            Logger.Debug($"Error fetching top comment for post {postId}: {ex.Message}");
         }
 
-        return "No comment available";
+        return string.Empty;
     }
 }

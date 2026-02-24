@@ -26,8 +26,8 @@ Save the password in a safe place temporarily.
 Open **PowerShell as Administrator** and run:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "your-handle@bsky.social", "User")
-[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "your-app-password-here", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-@bsky.social", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "testiestesties", "User")
 ```
 
 Replace:
@@ -36,8 +36,8 @@ Replace:
 
 Example:
 ```powershell
-[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "alice@bsky.social", "User")
-[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "a34k-j2hd-f83k-w9jd", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-buddy@bsky.social", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "testiestesties", "User")
 ```
 
 ## Step 3: Verify Setup
@@ -69,8 +69,8 @@ For Task Scheduler or other apps to pick up the variables, you may need to:
 
 ```powershell
 # Update with new values
-[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "new-handle@bsky.social", "User")
-[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "new-app-password", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-buddy@bsky.social", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "testiestesties", "User")
 ```
 
 ## If You Need to Remove Credentials
@@ -106,7 +106,7 @@ Get-Item Env:BLUESKY_APP_PASSWORD
 
 - Double-check the app password (copy/paste to avoid typos)
 - Make sure it's an app password, not your main account password
-- Try regenerating a new app password in Bluesky settings
+bool success = await BlueskyClient.PostAsync(post.Title, imagePath);
 
 ## Example: Full Setup
 
@@ -114,8 +114,8 @@ Get-Item Env:BLUESKY_APP_PASSWORD
 # 1. Open PowerShell as Administrator
 # 2. Run these commands (replace with your actual values):
 
-[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-buddy@bsky.social", "User")
-[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "bsky-app", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-buddy", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "testiestesties", "User")
 
 # 3. Verify:
 $env:BLUESKY_HANDLE

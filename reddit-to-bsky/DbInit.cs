@@ -19,6 +19,10 @@ public static class DbInit
                         img_hash TEXT,
                         posted_at DATETIME
                     );
+                    CREATE TABLE IF NOT EXISTS metadata (
+                        key TEXT PRIMARY KEY,
+                        value TEXT
+                    );
                 ";
                 cmd.ExecuteNonQuery();
                 _logger.Debug("Tables created/verified successfully");

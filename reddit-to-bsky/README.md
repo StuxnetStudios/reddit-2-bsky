@@ -29,8 +29,8 @@ See [CREDENTIALS.md](CREDENTIALS.md) for detailed instructions on storing creden
 
 Quick version:
 ```powershell
-[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "your-handle@bsky.social", "User")
-[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "your-app-password", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_HANDLE", "stux-buddy@bsky.social", "User")
+[Environment]::SetEnvironmentVariable("BLUESKY_APP_PASSWORD", "bsky-api", "User")
 ```
 
 ### Step 2: Run the Bot

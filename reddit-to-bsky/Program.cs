@@ -21,10 +21,36 @@ class Program
             // Initialize database
             DbInit.Initialize();
             DbUpgrade.MigrateIfNeeded();
+            // Check persistent cooldown for rate limits
+            var nextAllowed = Database.GetNextAllowedPostUtc();
+            if (nextAllowed.HasValue && nextAllowed.Value > DateTime.UtcNow)
+            {
+                _logger.Warn($"Next allowed post time is {nextAllowed.Value:o} UTC; exiting to avoid rate limits");
+                return;
+            }
 
             // Load configuration
             var subreddits = LoadSubredditsFromConfig();
             _logger.Info($"Available subreddits: {string.Join(", r/", subreddits)}");
+
+            // Parse -n <count> limit from args
+            int maxPosts = int.MaxValue;
+            var filteredArgs = new List<string>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].ToLower() == "-n" && i + 1 < args.Length && int.TryParse(args[i + 1], out int n))
+                {
+                    maxPosts = n;
+                    i++; // skip the number
+                }
+                else
+                {
+                    filteredArgs.Add(args[i]);
+                }
+            }
+            args = filteredArgs.ToArray();
+            if (maxPosts != int.MaxValue)
+                _logger.Info($"Post limit: {maxPosts}");
 
             // If no command line args, prompt user for subreddit selection
             List<string> selectedSubreddits = subreddits;
@@ -98,13 +124,22 @@ class Program
                         continue;
                     }
 
-                    // Post to Bluesky
-                    bool success = await BlueskyClient.PostAsync(post.TopComment, imagePath);
+                    // Post to Bluesky — use top comment, fall back to post title
+                    string topComment = await RedditClient.FetchTopCommentAsync(post.RedditId);
+                    string postText = !string.IsNullOrWhiteSpace(topComment)
+                        ? topComment
+                        : post.Title;
+                    bool success = await BlueskyClient.PostAsync(postText, imagePath);
                     if (success)
                     {
                         Database.MarkPosted(post.RedditId, imageHash);
                         _logger.Info($"Posted r/{post.Subreddit}/{post.RedditId} to Bluesky");
                         successCount++;
+                        if (successCount >= maxPosts)
+                        {
+                            _logger.Info($"Reached post limit of {maxPosts}, stopping.");
+                            break;
+                        }
                     }
                     else
                     {
@@ -162,7 +197,7 @@ class Program
             _logger.Error(ex, "Error loading subreddits from config");
         }
 
-        return new List<string> { "Conservative" };
+        return new List<string> { "ProgrammerHumor" };
     }
 
     private static List<string> PromptForSubreddits(List<string> available)
