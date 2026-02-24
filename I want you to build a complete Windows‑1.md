@@ -1,11 +1,3 @@
-I want you to build a complete Windows‑11‑compatible automation app that performs the following workflow:
-
-GOAL:
-Scrape r/Conservative for posts with more than 200 upvotes that contain an image, extract the top comment, deduplicate images using perceptual hashing, and post the image + top comment to Bluesky using my bot credentials. The app must run locally on Windows 11.
-
-IMPORTANT:
-Reddit API access is NOT available. You must use Pushshift + HTML scraping instead of Reddit’s API.
-
 -------------------------------------
 ARCHITECTURE REQUIREMENTS
 -------------------------------------
