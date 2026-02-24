@@ -1,5 +1,7 @@
 # Reddit to Bluesky Bot
 
+**Version 1.0**
+
 A Windows 11 automation app that scrapes multiple subreddits, deduplicates images using perceptual hashing, and posts to Bluesky.
 
 ## Features
@@ -103,6 +105,15 @@ C:\workspace\web\reddit-to-bsky\setup-task-scheduler.ps1
 This creates an hourly scheduled task that runs `-a` (all subreddits).
 
 To run specific subreddits on a schedule, edit the task manually in Task Scheduler to append arguments like: `r/Conservative r/Republican`
+
+## Release Notes
+
+### v1.0 (2026-02-24)
+
+- Initial public release
+- Features multi-subreddit scraping, image deduplication, top-comment posting, and 45‑minute cooldown
+- Configurable thresholds and fetch limits
+- Windows Task Scheduler integration and credential docs
 
 ## Database Schema
 
