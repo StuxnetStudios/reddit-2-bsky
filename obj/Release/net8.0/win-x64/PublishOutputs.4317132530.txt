@@ -1,0 +1,3 @@
+C:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\reddit-to-bsky.pdb
+C:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\e_sqlite3.dll
+C:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\reddit-to-bsky.exe

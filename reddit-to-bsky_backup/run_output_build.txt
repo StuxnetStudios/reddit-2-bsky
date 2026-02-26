@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  Restored c:\workspace\web\reddit-to-bsky\reddit-to-bsky.csproj (in 149 ms).
+c:\workspace\web\reddit-to-bsky\BlueskyClient.cs(170,28): warning CS8601: Possible null reference assignment. [c:\workspace\web\reddit-to-bsky\reddit-to-bsky.csproj]
+  reddit-to-bsky -> c:\workspace\web\reddit-to-bsky\bin\Debug\net8.0\reddit-to-bsky.dll
+
+Build succeeded.
+
+c:\workspace\web\reddit-to-bsky\BlueskyClient.cs(170,28): warning CS8601: Possible null reference assignment. [c:\workspace\web\reddit-to-bsky\reddit-to-bsky.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.45

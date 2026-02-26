@@ -1,5 +1,0 @@
-  Determining projects to restore...
-  Restored c:\workspace\web\reddit-to-bsky\reddit-to-bsky.csproj (in 168 ms).
-c:\workspace\web\reddit-to-bsky\BlueskyClient.cs(170,28): warning CS8601: Possible null reference assignment. [c:\workspace\web\reddit-to-bsky\reddit-to-bsky.csproj]
-  reddit-to-bsky -> c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\reddit-to-bsky.dll
-  reddit-to-bsky -> c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\

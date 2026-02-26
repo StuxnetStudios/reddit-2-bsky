@@ -1,0 +1,2 @@
+C:\workspace\web\reddit-to-bsky\out\reddit-to-bsky.pdb
+C:\workspace\web\reddit-to-bsky\out\reddit-to-bsky.exe

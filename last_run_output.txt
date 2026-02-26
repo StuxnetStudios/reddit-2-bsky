@@ -1,0 +1,70 @@
+53 [INFO] ========== Reddit to Bluesky Bot Started ==========
+53 [DEBUG] Attempting to initialize database...
+53 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Getting database connection...
+53 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Creating new SQLite connection...
+53 [DEBUG] Connection opened successfully
+53 [DEBUG] Creating tables if not exist...
+53 [DEBUG] Tables created/verified successfully
+53 [DEBUG] Checking for database schema upgrades...
+53 [DEBUG] Getting database connection...
+53 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Creating new SQLite connection...
+53 [DEBUG] Connection opened successfully
+53 [DEBUG] img_hash column already exists
+53 [DEBUG] Getting database connection...
+53 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+53 [DEBUG] Creating new SQLite connection...
+53 [DEBUG] Connection opened successfully
+53 [WARN] appsettings.json not found, using default subreddits
+53 [INFO] Available subreddits: Conservative
+53 [INFO] Using all configured subreddits
+53 [INFO] Configured subreddits: Conservative
+53 [INFO] Starting Reddit scrape cycle...
+53 [INFO] Fetching posts from r/Conservative...
+53 [DEBUG] Querying: https://api.pullpush.io/reddit/search/submission/?subreddit=Conservative&score=>200&limit=100&has_url=true
+56 [INFO] Fetched 2 posts from r/Conservative
+56 [INFO] Total posts fetched: 2
+56 [DEBUG] Checking if already posted: 1k7iewq
+56 [DEBUG] Getting database connection...
+56 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Creating new SQLite connection...
+56 [DEBUG] Connection opened successfully
+56 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_1b72dfee-750f-4478-a564-10fcc053dd43.jpg
+56 [DEBUG] Computed pHash: 087C5C1CFFFFC300
+56 [DEBUG] Checking if duplicate image: 087C5C1CFFFFC300
+56 [DEBUG] Getting database connection...
+56 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Creating new SQLite connection...
+56 [DEBUG] Connection opened successfully
+56 [DEBUG] Using Bluesky handle: stux=buddy.bsky.social
+56 [ERROR] Bluesky login failed: 401 Unauthorized
+56 [DEBUG] Bluesky response body: {"error":"AuthenticationRequired","message":"Invalid identifier or password"}
+56 [ERROR] Failed to authenticate with Bluesky
+56 [ERROR] Failed to post r/Conservative/1k7iewq to Bluesky
+56 [DEBUG] Checking if already posted: 1k6rkii
+56 [DEBUG] Getting database connection...
+56 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+56 [DEBUG] Creating new SQLite connection...
+56 [DEBUG] Connection opened successfully
+56 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_b6442711-c618-4a03-9002-acf66271a53d.jpg
+57 [DEBUG] Computed pHash: 0F1F0101034FFFFF
+57 [DEBUG] Checking if duplicate image: 0F1F0101034FFFFF
+57 [DEBUG] Getting database connection...
+57 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+57 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+57 [DEBUG] Creating new SQLite connection...
+57 [DEBUG] Connection opened successfully
+57 [DEBUG] Using Bluesky handle: stux=buddy.bsky.social
+57 [ERROR] Bluesky login failed: 401 Unauthorized
+57 [DEBUG] Bluesky response body: {"error":"AuthenticationRequired","message":"Invalid identifier or password"}
+57 [ERROR] Failed to authenticate with Bluesky
+57 [ERROR] Failed to post r/Conservative/1k6rkii to Bluesky
+57 [INFO] ========== Cycle Complete: 0 posted, 0 skipped ==========

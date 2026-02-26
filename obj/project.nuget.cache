@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "wFvGTf9I4h4=",
+  "success": true,
+  "projectFilePath": "C:\\workspace\\web\\reddit-to-bsky\\reddit-to-bsky.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\stuxn\\.nuget\\packages\\htmlagilitypack\\1.11.60\\htmlagilitypack.1.11.60.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\microsoft.data.sqlite\\8.0.8\\microsoft.data.sqlite.8.0.8.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.8\\microsoft.data.sqlite.core.8.0.8.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\nlog\\5.2.8\\nlog.5.2.8.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\sixlabors.imagesharp\\3.1.12\\sixlabors.imagesharp.3.1.12.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.6\\sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\stuxn\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512"
+  ],
+  "logs": []
+}

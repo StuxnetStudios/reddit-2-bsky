@@ -1,0 +1,65 @@
+37 [INFO] ========== Reddit to Bluesky Bot Started ==========
+37 [DEBUG] Attempting to initialize database...
+37 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+37 [DEBUG] Getting database connection...
+37 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+37 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+37 [DEBUG] Creating new SQLite connection...
+37 [DEBUG] Connection opened successfully
+37 [DEBUG] Creating tables if not exist...
+37 [DEBUG] Tables created/verified successfully
+37 [DEBUG] Checking for database schema upgrades...
+37 [DEBUG] Getting database connection...
+37 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+37 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+37 [DEBUG] Creating new SQLite connection...
+37 [DEBUG] Connection opened successfully
+37 [DEBUG] img_hash column already exists
+37 [WARN] appsettings.json not found, using default subreddits
+37 [INFO] Available subreddits: Conservative
+37 [INFO] Using all configured subreddits
+37 [INFO] Configured subreddits: Conservative
+37 [INFO] Starting Reddit scrape cycle...
+37 [INFO] Fetching posts from r/Conservative...
+37 [DEBUG] Querying: https://api.pullpush.io/reddit/search/submission/?subreddit=Conservative&score=>200&limit=100&has_url=true
+40 [INFO] Fetched 2 posts from r/Conservative
+40 [INFO] Total posts fetched: 2
+40 [DEBUG] Checking if already posted: 1k7iewq
+40 [DEBUG] Getting database connection...
+40 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Creating new SQLite connection...
+40 [DEBUG] Connection opened successfully
+40 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_8d3d604f-1752-4c1e-8a34-40e6ace2678f.jpg
+40 [DEBUG] Computed pHash: 087C5C1CFFFFC300
+40 [DEBUG] Checking if duplicate image: 087C5C1CFFFFC300
+40 [DEBUG] Getting database connection...
+40 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Creating new SQLite connection...
+40 [DEBUG] Connection opened successfully
+40 [DEBUG] Using Bluesky handle: stux-buddy.bsky.social
+40 [ERROR] Bluesky login failed: 429 Too Many Requests
+40 [DEBUG] Bluesky response body: {"error":"RateLimitExceeded","message":"Rate Limit Exceeded"}
+40 [ERROR] Failed to authenticate with Bluesky
+40 [ERROR] Failed to post r/Conservative/1k7iewq to Bluesky
+40 [DEBUG] Checking if already posted: 1k6rkii
+40 [DEBUG] Getting database connection...
+40 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+40 [DEBUG] Creating new SQLite connection...
+40 [DEBUG] Connection opened successfully
+40 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_a945e3c0-0c12-4d2a-9e57-50b96961d22d.jpg
+41 [DEBUG] Computed pHash: 0F1F0101034FFFFF
+41 [DEBUG] Checking if duplicate image: 0F1F0101034FFFFF
+41 [DEBUG] Getting database connection...
+41 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+41 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+41 [DEBUG] Creating new SQLite connection...
+41 [DEBUG] Connection opened successfully
+41 [DEBUG] Using Bluesky handle: stux-buddy.bsky.social
+41 [ERROR] Bluesky login failed: 429 Too Many Requests
+41 [DEBUG] Bluesky response body: {"error":"RateLimitExceeded","message":"Rate Limit Exceeded"}
+41 [ERROR] Failed to authenticate with Bluesky
+41 [ERROR] Failed to post r/Conservative/1k6rkii to Bluesky
+41 [INFO] ========== Cycle Complete: 0 posted, 0 skipped ==========

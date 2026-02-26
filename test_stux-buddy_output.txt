@@ -1,0 +1,82 @@
+04 [INFO] ========== Reddit to Bluesky Bot Started ==========
+04 [DEBUG] Attempting to initialize database...
+04 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Getting database connection...
+04 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Creating new SQLite connection...
+04 [DEBUG] Connection opened successfully
+04 [DEBUG] Creating tables if not exist...
+04 [DEBUG] Tables created/verified successfully
+04 [DEBUG] Checking for database schema upgrades...
+04 [DEBUG] Getting database connection...
+04 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Creating new SQLite connection...
+04 [DEBUG] Connection opened successfully
+04 [DEBUG] img_hash column already exists
+04 [DEBUG] Getting database connection...
+04 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+04 [DEBUG] Creating new SQLite connection...
+04 [DEBUG] Connection opened successfully
+04 [WARN] appsettings.json not found, using default subreddits
+04 [INFO] Available subreddits: Conservative
+04 [INFO] Using all configured subreddits
+04 [INFO] Configured subreddits: Conservative
+04 [INFO] Starting Reddit scrape cycle...
+04 [INFO] Fetching posts from r/Conservative...
+04 [DEBUG] Querying: https://api.pullpush.io/reddit/search/submission/?subreddit=Conservative&score=>200&limit=100&has_url=true
+08 [INFO] Fetched 2 posts from r/Conservative
+08 [INFO] Total posts fetched: 2
+08 [DEBUG] Checking if already posted: 1k7iewq
+08 [DEBUG] Getting database connection...
+08 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Creating new SQLite connection...
+08 [DEBUG] Connection opened successfully
+08 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_e6305d23-a870-461b-92b9-31141c19d27b.jpg
+08 [DEBUG] Computed pHash: 087C5C1CFFFFC300
+08 [DEBUG] Checking if duplicate image: 087C5C1CFFFFC300
+08 [DEBUG] Getting database connection...
+08 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Creating new SQLite connection...
+08 [DEBUG] Connection opened successfully
+08 [DEBUG] Using Bluesky handle: stux-buddy.bsky.social
+08 [ERROR] Bluesky login failed: 429 Too Many Requests
+08 [DEBUG] Bluesky response body: {"error":"RateLimitExceeded","message":"Rate Limit Exceeded"}
+08 [DEBUG] Getting database connection...
+08 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Creating new SQLite connection...
+08 [DEBUG] Connection opened successfully
+08 [INFO] Setting next allowed post UTC to 2026-02-23T02:59:08.8529792Z due to rate limit
+08 [ERROR] Failed to authenticate with Bluesky
+08 [ERROR] Failed to post r/Conservative/1k7iewq to Bluesky
+08 [DEBUG] Checking if already posted: 1k6rkii
+08 [DEBUG] Getting database connection...
+08 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Creating new SQLite connection...
+08 [DEBUG] Connection opened successfully
+08 [DEBUG] Downloaded image to: C:\Users\stuxn\AppData\Local\Temp\reddit-to-bsky\img_8fb934e2-754e-44f6-aee3-f7e2ed198531.jpg
+08 [DEBUG] Computed pHash: 0F1F0101034FFFFF
+08 [DEBUG] Checking if duplicate image: 0F1F0101034FFFFF
+08 [DEBUG] Getting database connection...
+08 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+08 [DEBUG] Creating new SQLite connection...
+08 [DEBUG] Connection opened successfully
+08 [DEBUG] Using Bluesky handle: stux-buddy.bsky.social
+09 [ERROR] Bluesky login failed: 429 Too Many Requests
+09 [DEBUG] Bluesky response body: {"error":"RateLimitExceeded","message":"Rate Limit Exceeded"}
+09 [DEBUG] Getting database connection...
+09 [DEBUG] Database path: c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+09 [DEBUG] Connection string: Data Source=c:\workspace\web\reddit-to-bsky\bin\Release\net8.0\win-x64\publish\posted.db
+09 [DEBUG] Creating new SQLite connection...
+09 [DEBUG] Connection opened successfully
+09 [INFO] Setting next allowed post UTC to 2026-02-23T02:59:09.0710467Z due to rate limit
+09 [ERROR] Failed to authenticate with Bluesky
+09 [ERROR] Failed to post r/Conservative/1k6rkii to Bluesky
+09 [INFO] ========== Cycle Complete: 0 posted, 0 skipped ==========

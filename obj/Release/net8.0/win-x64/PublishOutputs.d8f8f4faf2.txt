@@ -1,0 +1,3 @@
+c:\workspace\web\reddit-to-bsky\out\reddit-to-bsky.pdb
+c:\workspace\web\reddit-to-bsky\out\e_sqlite3.dll
+c:\workspace\web\reddit-to-bsky\out\reddit-to-bsky.exe
